@@ -9,9 +9,12 @@ import com.vaadin.shared.ui.JavaScriptComponentState;
  */
 public class RangeSliderState extends JavaScriptComponentState {
     /**
-     * What are the min- and max-values for the slider?
+     * The lower and upper boundary for the slider. Is not handles as an instance of range
+     * to force the serialisation of both values each time to the support the current recreation of the
+     * noUiSlider each time the state is changed.
      */
-    public Range boundaries = new Range(0, 0);
+    public Integer lowerBoundary = 0;
+    public Integer upperBoundary = 0;
 
     /**
      * The step-size each side of the slider takes

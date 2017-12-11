@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class Range implements Serializable {
 
+    private static final long serialVersionUID = -1490025607687396331L;
+
     private int lower;
     private int upper;
 

@@ -31,15 +31,18 @@ public class DemoUI extends UI {
         FormLayout layout = new FormLayout();
 
         RangeSlider rangeSlider = new RangeSlider("RangeSlider", new Range(0, 20));
-        rangeSlider.setSizeFull();
+        rangeSlider.setWidth("50%");//setSizeFull();
         layout.addComponent(rangeSlider);
 
         Slider slider = new Slider("Vaadin-Slider", 0, 10);
         layout.addComponent(slider);
 
         TextField value = new TextField("Value");
-        value.setReadOnly(true);
+        //value.setReadOnly(true);
         layout.addComponent(value);
+
+        TextField boundaries = new TextField("Boundaries");
+        layout.addComponent(boundaries);
 
         Button changeValue = new Button("Set to [4, 6]", event -> {
             rangeSlider.setValue(new Range(4, 6));
@@ -65,6 +68,12 @@ public class DemoUI extends UI {
         Binder<RangeSlider> binder = new Binder<RangeSlider>();
         binder.setBean(rangeSlider);
 
+        binder.forField(value)
+                .withConverter(new RangeConverter())
+                .bind(RangeSlider::getValue, RangeSlider::setValue);
+        binder.forField(boundaries)
+                .withConverter(new RangeConverter())
+                .bind(RangeSlider::getBoundaries, RangeSlider::setBoundaries);
         binder.forField(step)
                 .withConverter(new StringToIntegerConverter("No valid integer"))
                 .bind(RangeSlider::getStep, RangeSlider::setStep);
@@ -79,13 +88,31 @@ public class DemoUI extends UI {
                 .withConverter(new OptionalIntegerConverter())
                 .bind(RangeSlider::getMaximumDifference, RangeSlider::setMaximumDifference);
 
-
-        rangeSlider.addValueChangeListener(event -> {
-            value.setValue(event.getValue().toString());
-        });
-        value.setValue(rangeSlider.getValue().toString());
+        Runnable update = () -> value.setValue(rangeSlider.getValue().getLower() + " - " + rangeSlider.getValue().getUpper());
+        rangeSlider.addValueChangeListener(event -> update.run());
+        update.run();
 
         setContent(layout);
+    }
+
+    private static class RangeConverter implements Converter<String, Range> {
+
+        @Override
+        public Result<Range> convertToModel(String value, ValueContext context) {
+            try {
+                String[] values = value.split("-");
+                int lower = Integer.valueOf(values[0].trim());
+                int upper = Integer.valueOf(values[1].trim());
+                return Result.ok(new Range(lower, upper));
+            } catch (Exception e) {
+                return Result.error("`" + value + "` is not a valid range. e.g. `0 - 10`");
+            }
+        }
+
+        @Override
+        public String convertToPresentation(Range value, ValueContext context) {
+            return String.format("%d - %d", value.getLower(), value.getUpper());
+        }
     }
 
     private static class OptionalIntegerConverter implements Converter<String, Integer> {

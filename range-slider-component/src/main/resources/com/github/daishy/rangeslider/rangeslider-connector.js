@@ -6,12 +6,24 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
     container.className = "range-slider-container";
     this.getElement().appendChild(container);
 
+    function arrayEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length)
+            return false;
+        for (var i = arr1.length; i--;) {
+            if (arr1[i] !== arr2[i])
+                return false;
+        }
+
+        return true;
+    }
 
     // wrapper-function to create and update the slider.
     function createSlider(state) {
-        var start = [state.boundaries.lower, state.boundaries.upper];
+        var previousValue = null;
+        var start = [state.lowerBoundary, state.upperBoundary];
         if (container.noUiSlider) {
             start = container.noUiSlider.get();
+            previousValue = start;
             container.noUiSlider.destroy();
         }
 
@@ -19,8 +31,8 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
             'connect': true,
             'start': start,
             'range': {
-                'min': state.boundaries.lower,
-                'max': state.boundaries.upper
+                'min': state.lowerBoundary,
+                'max': state.upperBoundary
             },
             'step': state.step,
             'format': {
@@ -33,10 +45,10 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
             }
         };
 
-        if (state.minimumDifference !== undefined) {
+        if (state.minimumDifference !== undefined && state.minimumDifference !== null) {
             options['margin'] = state.minimumDifference;
         }
-        if (state.maximumDifference !== undefined) {
+        if (state.maximumDifference !== undefined && state.minimumDifference !== null) {
             options['limit'] = state.maximumDifference;
         }
         if (state.tooltips === "ALWAYS" || state.tooltips === "ON_CHANGE") {
@@ -54,7 +66,7 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
 
         // Notify the server in case the component changed
         container.noUiSlider.on('set', function (values) {
-            console.log("Value changed to ", values[0], values[1], container.noUiSlider.get());
+            console.debug("Value changed to ", values[0], values[1], container.noUiSlider.get());
             connector.valueChanged(values[0], values[1]);
         });
 
@@ -76,6 +88,13 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
         else {
             container.className = container.className.replace(" range-slider-show-tooltips", "");
         }
+
+        // check if we recreated the slider and an option changed the displayed value. If thats the case
+        // notify the connector of the changed value
+        if (previousValue != null && !arrayEqual(previousValue, container.noUiSlider.get())) {
+            var values = container.noUiSlider.get();
+            connector.valueChanged(values[0], values[1]);
+        }
     }
 
     createSlider(this.getState());
@@ -84,11 +103,10 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
     // Handle changes from the server-side
     this.onStateChange = function () {
         var state = this.getState();
-        console.log("onStateChange", state);
 
         // currently we just drop the slider and recreate it, because some options require dropping the
         // entire slider and just recreating is currently the easier option. updateOptions below is the alternative
-        // solution.
+        // solution but does not support Tooltips. May change in the future to a more efficient solution.
         createSlider(state);
 
         // updateOptions can only update 'margin', 'limit',  'step', 'range', 'animate' and 'snap'
@@ -98,7 +116,7 @@ window.com_github_daishy_rangeslider_RangeSlider = function () {
 
     // Exposed function to set the components value from the server-side.
     connector.setValue = function (lower, upper) {
-        console.log("Changing value to ", lower, upper);
+        console.debug("Changing value to ", lower, upper);
         container.noUiSlider.set([lower, upper]);
     }
 }

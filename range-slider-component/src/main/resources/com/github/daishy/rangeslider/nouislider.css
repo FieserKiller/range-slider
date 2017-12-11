@@ -302,25 +302,3 @@
     top: 50%;
     right: 120%;
 }
-
-/* Custom styles for the vaadin-component */
-
-.noUi-connect {
-    background: #197de1; /* Change the color of the connect-line */
-}
-
-.noUi-horizontal {
-    height: 8px; /* CHange the height of the connect-line */
-}
-
-.range-slider-container {
-    margin-right: 20px;
-}
-
-.range-slider-container.range-slider-show-tooltips .noUi-tooltip {
-    display: block;
-}
-
-.range-slider-container .noUi-tooltip {
-    display: none;
-}

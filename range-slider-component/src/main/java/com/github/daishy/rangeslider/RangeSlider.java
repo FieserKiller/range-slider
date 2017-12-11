@@ -12,7 +12,7 @@ import elemental.json.JsonArray;
 import java.util.Objects;
 
 /**
- * The component.
+ * A vaadin 8 range-slider-component.
  *
  * @author daishy@github.com
  */
@@ -20,7 +20,7 @@ import java.util.Objects;
 @StyleSheet({"generated/rangeslider.min.css"})
 // For debugging / testing include the files directly:
 //@JavaScript({"nouislider.js", "rangeslider-connector.js"})
-//@StyleSheet({"nouislider.css"})
+//@StyleSheet({"nouislider.css", "rangeslider-styles.css"})
 public class RangeSlider extends AbstractJavaScriptComponent implements HasValue<Range> {
 
     /**
@@ -34,7 +34,17 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @param boundary The lower and upper boundaries for the range.
      */
     public RangeSlider(Range boundary) {
-        this(null, boundary);
+        this((String) null, boundary);
+    }
+
+    /**
+     * Create the new range-slider. The value of this field is initialized with the given boundary.
+     *
+     * @param boundary The lower and upper boundaries for the range.
+     * @param value    The preselected range. Must be within the boundaries.
+     */
+    public RangeSlider(Range boundary, Range value) {
+        this(null, boundary, value);
     }
 
     /**
@@ -58,8 +68,8 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
         if (!boundary.contains(value)) {
             throw new IllegalArgumentException("The start value `" + value + "` does not fit within the boundary `" + boundary + "`");
         }
-        this.getState().boundaries = boundary;
         this.value = value;
+        this.setBoundaries(boundary);
         this.setCaption(caption);
 
         this.addFunction("valueChanged", this::onValueChanged);
@@ -74,7 +84,7 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
     private void onValueChanged(JsonArray data) {
         String rawLower = data.getString(0);
         String rawUpper = data.getString(1);
-        // raw value is like 2.0
+        // raw value is a decimal (like 2.0)
         int lower = Double.valueOf(rawLower).intValue();
         int upper = Double.valueOf(rawUpper).intValue();
         this.setValue(new Range(lower, upper), true);
@@ -83,6 +93,9 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
 
     @Override
     public void setValue(Range value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Null is not allowed");
+        }
         this.setValue(value, false);
     }
 
@@ -138,6 +151,13 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
     }
 
     public void setStep(Integer step) {
+        if (step != null && this.hasMaximumDifference() && this.getMaximumDifference() % step != 0) {
+            throw new IllegalArgumentException("Step must divisor of maximumDifference.");
+        }
+        if (step != null && this.hasMinimumDifference() && this.getMinimumDifference() % step != 0) {
+            throw new IllegalArgumentException("Step must divisor of minimumDifference.");
+        }
+
         this.getState().step = step;
     }
 
@@ -156,7 +176,8 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
             this.adaptValueToFitNewBoundaries(boundaries);
         }
 
-        this.getState().boundaries = boundaries;
+        this.getState().lowerBoundary = boundaries.getLower();
+        this.getState().upperBoundary = boundaries.getUpper();
     }
 
     private void adaptValueToFitNewBoundaries(Range boundaries) {
@@ -181,7 +202,7 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @return -
      */
     public Range getBoundaries() {
-        return this.getState().boundaries;
+        return new Range(this.getState().lowerBoundary, this.getState().upperBoundary);
     }
 
     public RangeSliderState.Tooltips getTooltips() {
@@ -200,9 +221,16 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @param minimumDifference -
      */
     public void setMinimumDifference(Integer minimumDifference) {
+        if (minimumDifference != null && minimumDifference < 0) {
+            throw new IllegalArgumentException("maximum difference must be greater than 0");
+        }
         if (minimumDifference != null && minimumDifference > this.getBoundaries().getDifference()) {
             throw new IllegalArgumentException("The current boundaries " + this.getBoundaries() + " don't allow for a minimum difference of " + minimumDifference);
         }
+        if (minimumDifference != null && this.getStep() != null && minimumDifference % this.getStep() != 0) {
+            throw new IllegalArgumentException("minimumDifference must be divisable by the current step-size " + this.getStep());
+        }
+
         this.getState().minimumDifference = minimumDifference;
     }
 
@@ -232,9 +260,16 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @param maximumDifference -
      */
     public void setMaximumDifference(Integer maximumDifference) {
+        if (maximumDifference != null && maximumDifference < 0) {
+            throw new IllegalArgumentException("maximum difference must be greater than 0");
+        }
         if (maximumDifference != null && maximumDifference > this.getBoundaries().getDifference()) {
             throw new IllegalArgumentException("The current boundaries " + this.getBoundaries() + " don't allow for a maximum distance of " + maximumDifference);
         }
+        if (maximumDifference != null && this.getStep() != null && maximumDifference % this.getStep() != 0) {
+            throw new IllegalArgumentException("maximumDifference must be divisable by the current step-size " + this.getStep());
+        }
+
         this.getState().maximumDifference = maximumDifference;
     }
 
@@ -279,7 +314,9 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
 
     @Override
     public Registration addValueChangeListener(HasValue.ValueChangeListener<Range> listener) {
-        return addListener(ValueChangeEvent.class, listener,
-                ValueChangeListener.VALUE_CHANGE_METHOD);
+        // The alternative of the deprecated field would be to use the exact same code used to define
+        //      the VALUE_CHANGE_METHOD-field instead:
+        // ReflectTools.findMethod(ValueChangeListener.class, "valueChange", ValueChangeEvent.class);
+        return addListener(ValueChangeEvent.class, listener, ValueChangeListener.VALUE_CHANGE_METHOD);
     }
 }
