@@ -1,110 +1,62 @@
 # RangeSlider Add-on for Vaadin 8
 
-RangeSlider is a UI component add-on for Vaadin 8.
+RangeSlider is a UI component add-on for Vaadin 8 that currently displays a
+slider with a lower and upper handle, to select a range of values. The Slider is based on Vaadins HasValue 
+and can be used with a Binder.
 
-## Online demo
+This addon is based massivly on the great noUiSlider-javascript-component, see
+https://refreshless.com/nouislider/ or https://github.com/leongersen/noUiSlider/ 
+for more infos. 
 
-Try the add-on demo at <url of the online demo>
-
-## Download release
-
-Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/range-slider
+## Known Limitations
+* Currently only integer-ranges are supported.
+* Styling adapted to valo, other themes may require some tuning. See the range-slider.css for more infos. 
 
 ## Building and running demo
 
-git clone <url of the MyComponent repository>
+git clone git://github.com/daishy/range-slider.git
 mvn clean install
-cd demo
-mvn jetty:run
+cd range-slider-demo
+mvn spring-boot:run
 
 To see the demo, navigate to http://localhost:8080/
 
-## Development with Eclipse IDE
-
-For further development of this add-on, the following tool-chain is recommended:
-- Eclipse IDE
-- m2e wtp plug-in (install it from Eclipse Marketplace)
-- Vaadin Eclipse plug-in (install it from Eclipse Marketplace)
-- JRebel Eclipse plug-in (install it from Eclipse Marketplace)
-- Chrome browser
-
-### Importing project
-
-Choose File > Import... > Existing Maven Projects
-
-Note that Eclipse may give "Plugin execution not covered by lifecycle configuration" errors for pom.xml. Use "Permanently mark goal resources in pom.xml as ignored in Eclipse build" quick-fix to mark these errors as permanently ignored in your project. Do not worry, the project still works fine. 
-
-### Debugging server-side
-
-If you have not already compiled the widgetset, do it now by running vaadin:install Maven target for range-slider-root project.
-
-If you have a JRebel license, it makes on the fly code changes faster. Just add JRebel nature to your range-slider-demo project by clicking project with right mouse button and choosing JRebel > Add JRebel Nature
-
-To debug project and make code modifications on the fly in the server-side, right-click the range-slider-demo project and choose Debug As > Debug on Server. Navigate to http://localhost:8080/range-slider-demo/ to see the application.
-
-### Debugging client-side
-
-Debugging client side code in the range-slider-demo project:
-  - run "mvn vaadin:run-codeserver" on a separate console while the application is running
-  - activate Super Dev Mode in the debug window of the application or by adding ?superdevmode to the URL
-  - You can access Java-sources and set breakpoints inside Chrome if you enable source maps from inspector settings.
  
-## Release notes
-
-### Version 1.0-SNAPSHOT
-- ...
-- ...
-
-## Roadmap
-
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
-
-## Issue tracking
-
-The issues for this add-on are tracked on its github.com page. All bug reports and feature requests are appreciated. 
-
-## Contributions
-
-Contributions are welcome, but there are no guarantees that they are accepted as such. Process for contributing is the following:
-- Fork this project
-- Create an issue to this project about the contribution (bug or feature) if there is no such issue about it already. Try to keep the scope minimal.
-- Develop and test the fix or functionality carefully. Only include minimum amount of code needed to fix the issue.
-- Refer to the fixed issue in commit
-- Send a pull request for the original project
-- Comment on the original issue that you have implemented a fix for it
-
 ## License & Author
 
-Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
+Add-on is distributed under Apache License 2.0. For license terms, see `LICENSE`.
 
-MyComponent is written by <...>
+## Usage and Examples
 
-# Developer Guide
+Create a new field as you would any other vaadin-field-component via the provided constructors.
 
-## Getting started
 
-Here is a simple example on how to try out the add-on component:
+Binding field via a binder:
+```java
+RangeSlider slider = new RangeSlider("cost-range", new Range(0, 200));
 
-<...>
+Binder<> binder = new Binder<Data>();
+binder.forField(slider).bind(Data::getCostRange, Data::setCostRange);
+```
 
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
+Setting a minimal and maximal difference between the values:
+```java
+RangeSlider slider = new RangeSlider("cost-range", new Range(0, 200));
+slider.setMinimalDifference(10); // values must be at least 10 appart
+slider.setMaximalDifference(50); // but no more than 50 appart
+```
 
-## Features
+Set the stepsize that are allowed
+```java
+RangeSlider slider = new RangeSlider("cost-range", new Range(0, 10));
+slider.setStep(2); // only 0, 2, 4, 6, 8, 10 are selectable
+```
 
-### Feature A
+Show Tooltips for the selected values:
+```java
+RangeSlider slider = new RangeSlider("cost-range", new Range(0, 10));
+slider.setTooltips(RangeSliderState.Tooltips.NEVER); // Never showing the selected values
+slider.setTooltips(RangeSliderState.Tooltips.ON_CHANGE); // Show selected values if slider is moved
+slider.setTooltips(RangeSliderState.Tooltips.ON_CHANGE); // Always show the selected values
+```
 
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
-
-## API
-
-MyComponent JavaDoc is available online at <...>

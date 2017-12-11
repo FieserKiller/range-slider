@@ -3,17 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.github.daishy</groupId>
-        <artifactId>range-slider-root</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>range-slider-component</artifactId>
+    <groupId>com.github.daishy</groupId>
+    <artifactId>range-slider</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>Vaadin Rangeslider Component</name>
+    <description>A rangeslider for Vaadin 8</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
 
         <!-- ZIP Manifest fields -->
         <Implementation-Version>${project.version}</Implementation-Version>
@@ -24,8 +26,40 @@
         <Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
     </properties>
 
-    <dependencies>
+    <developers>
+        <developer>
+            <id>daishy</id>
+            <name>Andre Schemschat</name>
+            <email>daishy@github.com</email>
+        </developer>
+    </developers>
 
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Daishy</name>
+        <url>https://github.com/daishy/range-slider/</url>
+    </organization>
+
+    <scm>
+        <url>git://github.com/daishy/range-slider.git</url>
+        <connection>scm:git:git://github.com/daishy/range-slider.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:/daishy/range-slider.git</developerConnection>
+        <tag>Range-Slider add-on for Vaadin</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/daishy/range-slider/issues</url>
+    </issueManagement>
+
+    <dependencies>
         <!-- Vaadin -->
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -34,6 +68,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Unit-Tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -50,6 +85,8 @@
 
     <build>
         <plugins>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -108,6 +145,7 @@
 
                             <cssSourceFiles>
                                 <cssSourceFile>nouislider.css</cssSourceFile>
+                                <cssSourceFile>rangeslider-styles.css</cssSourceFile>
                             </cssSourceFiles>
                             <cssFinalFile>rangeslider.css</cssFinalFile>
 
@@ -155,6 +193,82 @@
         </resources>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>oss-deploy</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.4</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
 </project>

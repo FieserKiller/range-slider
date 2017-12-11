@@ -5,11 +5,8 @@
 
     <groupId>com.github.daishy</groupId>
     <artifactId>range-slider-root</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-
-    <name>Vaadin Rangeslider Component</name>
-    <description>A rangeslider for Vaadin 8</description>
 
     <prerequisites>
         <maven>3</maven>
@@ -19,78 +16,5 @@
         <module>range-slider-component</module>
         <module>range-slider-demo</module>
     </modules>
-
-    <developers>
-        <developer>
-            <id>daishy</id>
-            <name>Andre Schemschat</name>
-            <email>daishy@github.com</email>
-        </developer>
-    </developers>
-
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <organization>
-        <name>Daishy</name>
-        <url>https://github.com/daishy/range-slider/</url>
-    </organization>
-
-    <scm>
-        <url>git://github.com/daishy/range-slider.git</url>
-        <connection>scm:git:git://github.com/daishy/range-slider.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:/daishy/${componentClassName}.git</developerConnection>
-        <tag>Range-Slider add-on for Vaadin</tag>
-    </scm>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/daishy/range-slider/issues</url>
-    </issueManagement>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 
 </project>
