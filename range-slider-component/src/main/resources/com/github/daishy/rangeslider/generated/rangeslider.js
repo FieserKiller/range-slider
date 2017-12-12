@@ -2333,12 +2333,13 @@
         if (state.maximumDifference !== undefined && state.minimumDifference !== null) {
             options['limit'] = state.maximumDifference;
         }
-        if (state.tooltips === "ALWAYS" || state.tooltips === "ON_CHANGE") {
+        if (state.tooltips === "ALWAYS" || state.tooltips === "ON_CHANGE" || state.tooltips === "ON_FOCUS") {
             options['tooltips'] = [true, true];
         }
 
         noUiSlider.create(container, options);
 
+        // Mark the slider as readonly if requested
         if (state.readonly) {
             container.setAttribute("disabled", true);
         }
@@ -2352,10 +2353,21 @@
             connector.valueChanged(values[0], values[1]);
         });
 
-        // Change the tooltip-toggl-class based on the chosen state. By default the tooltip is hidden,
-        // and only displayed if the range-slider-show-tooltips-class is added to the container.
+        // Change the tooltip-toggle-class based on the chosen state. By default the tooltip is hidden,
+        // and only displayed if 'range-slider-show-tooltips'-class is added to the container.
+        container.className = container.className.replace(" range-slider-show-tooltips", ""); // Always clear first
+        // set up the event-listener for ON_FOCUS
+        container.addEventListener("focus", function (event) {
+            if (state.tooltips === "ON_FOCUS") {
+                container.className += " range-slider-show-tooltips";
+            }
+        }, true);
+        container.addEventListener("blur", function (event) {
+            if (state.tooltips === "ON_FOCUS") {
+                container.className = container.className.replace(" range-slider-show-tooltips", "");
+            }
+        }, true);
         if (state.tooltips === "ON_CHANGE") {
-            container.className = container.className.replace(" range-slider-show-tooltips", "");
             container.noUiSlider.on('start', function () {
                 container.className += " range-slider-show-tooltips";
             });
@@ -2364,11 +2376,13 @@
             });
         }
         else if (state.tooltips === "ALWAYS") {
-            container.className = container.className.replace(" range-slider-show-tooltips", "");
             container.className += " range-slider-show-tooltips";
         }
-        else {
-            container.className = container.className.replace(" range-slider-show-tooltips", "");
+        else if (state.tooltips === "NEVER") {
+            // nothing to do here.
+        }
+        else if (state.tooltips === "ON_FOCUS") {
+            // nothing to do here, the listener above will handle this case.
         }
 
         // check if we recreated the slider and an option changed the displayed value. If thats the case

@@ -40,7 +40,7 @@ public class RangeSliderState extends JavaScriptComponentState {
      * Should the slider show the current values?
      */
     public enum Tooltips {
-        ALWAYS, ON_CHANGE, NEVER
+        ALWAYS, ON_CHANGE, ON_FOCUS, NEVER
     }
 
     public Tooltips tooltips = Tooltips.ALWAYS;
