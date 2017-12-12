@@ -2330,7 +2330,7 @@
         if (state.minimumDifference !== undefined && state.minimumDifference !== null) {
             options['margin'] = state.minimumDifference;
         }
-        if (state.maximumDifference !== undefined && state.minimumDifference !== null) {
+        if (state.maximumDifference !== undefined && state.maximumDifference !== null) {
             options['limit'] = state.maximumDifference;
         }
         if (state.tooltips === "ALWAYS" || state.tooltips === "ON_CHANGE" || state.tooltips === "ON_FOCUS") {

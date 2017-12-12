@@ -8,6 +8,13 @@ This addon is based massivly on the great noUiSlider-javascript-component, see
 https://refreshless.com/nouislider/ or https://github.com/leongersen/noUiSlider/ 
 for more infos. 
 
+## Features
+* changing the step size between values
+* changing the minimal and maximal difference allowed between the lower and upper value
+* Value-Tooltips can be displayed never, always, on-focus or on-change.
+* slider can be read-only.
+* slider integrates in the vaadin-8 binder
+
 ## Known Limitations
 * Currently only integer-ranges are supported.
 * Styling adapted to valo, other themes may require some tuning. See the range-slider.css for more infos. 
