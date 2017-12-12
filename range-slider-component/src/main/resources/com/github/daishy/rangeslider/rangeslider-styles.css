@@ -1,11 +1,12 @@
-/* Custom styles for the vaadin-component */
+/* Custom styles for the vaadin-component. Most of these styles adapt the slider to look like the valo-slider. For
+ another theme these styles must probably be changed*/
 
 .noUi-connect {
     background: #197de1; /* Change the color of the connect-line */
 }
 
 .noUi-horizontal {
-    height: 8px; /* CHange the height of the connect-line */
+    height: 8px; /* Change the height of the connect-line */
 }
 
 .range-slider-container {
@@ -18,4 +19,13 @@
 
 .range-slider-container .noUi-tooltip {
     display: none;
+
+    /* Change the tooltips to look like vaadins */
+    background-color: rgba(50, 50, 50, 0.9);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.v-slider-handle:focus:after {
+    opacity: 1; /* Show the highlight-box if the handle is focused */
 }

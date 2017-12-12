@@ -72,6 +72,8 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
         this.setBoundaries(boundary);
         this.setCaption(caption);
 
+        this.addStyleName("v-slider");
+
         this.addFunction("valueChanged", this::onValueChanged);
     }
 
