@@ -1,5 +1,6 @@
 package rangeslider.demo;
 
+import com.github.daishy.rangeslider.RangeConverter;
 import com.github.daishy.rangeslider.RangeSlider;
 import com.github.daishy.rangeslider.client.Range;
 import com.github.daishy.rangeslider.client.RangeSliderState;
@@ -93,26 +94,6 @@ public class DemoUI extends UI {
         update.run();
 
         setContent(layout);
-    }
-
-    private static class RangeConverter implements Converter<String, Range> {
-
-        @Override
-        public Result<Range> convertToModel(String value, ValueContext context) {
-            try {
-                String[] values = value.split("-");
-                int lower = Integer.valueOf(values[0].trim());
-                int upper = Integer.valueOf(values[1].trim());
-                return Result.ok(new Range(lower, upper));
-            } catch (Exception e) {
-                return Result.error("`" + value + "` is not a valid range. e.g. `0 - 10`");
-            }
-        }
-
-        @Override
-        public String convertToPresentation(Range value, ValueContext context) {
-            return String.format("%d - %d", value.getLower(), value.getUpper());
-        }
     }
 
     private static class OptionalIntegerConverter implements Converter<String, Integer> {
