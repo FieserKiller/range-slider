@@ -64,6 +64,7 @@ Show Tooltips for the selected values:
 RangeSlider slider = new RangeSlider("cost-range", new Range(0, 10));
 slider.setTooltips(RangeSliderState.Tooltips.NEVER); // Never showing the selected values
 slider.setTooltips(RangeSliderState.Tooltips.ON_CHANGE); // Show selected values if slider is moved
-slider.setTooltips(RangeSliderState.Tooltips.ON_CHANGE); // Always show the selected values
+slider.setTooltips(RangeSliderState.Tooltips.ALWAYS); // Always show the selected values
+slider.setTooltips(RangeSliderState.Tooltips.ON_FOCUS); // Show if component focused
 ```
 
