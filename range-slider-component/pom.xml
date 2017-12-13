@@ -5,10 +5,10 @@
 
     <groupId>com.github.daishy</groupId>
     <artifactId>range-slider</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Vaadin Rangeslider Component</name>
+    <name>range-slider</name>
     <description>A rangeslider for Vaadin 8</description>
     <url>https://github.com/daishy/range-slider</url>
 
@@ -52,7 +52,7 @@
         <url>git://github.com/daishy/range-slider.git</url>
         <connection>scm:git:git://github.com/daishy/range-slider.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/daishy/range-slider.git</developerConnection>
-        <tag>Range-Slider add-on for Vaadin</tag>
+        <tag>range-slider-1.0.0</tag>
     </scm>
 
     <issueManagement>
