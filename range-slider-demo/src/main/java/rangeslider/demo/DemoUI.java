@@ -1,5 +1,7 @@
 package rangeslider.demo;
 
+import java.util.EnumSet;
+
 import com.github.daishy.rangeslider.RangeConverter;
 import com.github.daishy.rangeslider.RangeSlider;
 import com.github.daishy.rangeslider.client.Range;
@@ -20,8 +22,6 @@ import com.vaadin.ui.Slider;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
-import java.util.EnumSet;
-
 
 @Title("Test Application")
 @SpringUI
@@ -31,7 +31,7 @@ public class DemoUI extends UI {
     protected void init(VaadinRequest request) {
         FormLayout layout = new FormLayout();
 
-        RangeSlider rangeSlider = new RangeSlider("RangeSlider", new Range(0, 20));
+        RangeSlider rangeSlider = new RangeSlider("RangeSlider", new Range(0, 20), new Range(5, 10));
         rangeSlider.setWidth("50%");//setSizeFull();
         layout.addComponent(rangeSlider);
 

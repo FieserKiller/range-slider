@@ -1,5 +1,7 @@
 package com.github.daishy.rangeslider;
 
+import java.util.Objects;
+
 import com.github.daishy.rangeslider.client.Range;
 import com.github.daishy.rangeslider.client.RangeSliderState;
 import com.vaadin.annotations.JavaScript;
@@ -7,9 +9,8 @@ import com.vaadin.annotations.StyleSheet;
 import com.vaadin.data.HasValue;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractJavaScriptComponent;
-import elemental.json.JsonArray;
 
-import java.util.Objects;
+import elemental.json.JsonArray;
 
 /**
  * A vaadin 8 range-slider-component.
@@ -68,13 +69,14 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
         if (!boundary.contains(value)) {
             throw new IllegalArgumentException("The start value `" + value + "` does not fit within the boundary `" + boundary + "`");
         }
-        this.value = value;
         this.setBoundaries(boundary);
         this.setCaption(caption);
 
         this.addStyleName("v-slider");
 
         this.addFunction("valueChanged", this::onValueChanged);
+
+        this.setValue(value);
     }
 
 
@@ -174,7 +176,7 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @param boundaries -
      */
     public void setBoundaries(Range boundaries) {
-        if (!boundaries.contains(this.value)) {
+        if (this.value != null && !boundaries.contains(this.value)) {
             this.adaptValueToFitNewBoundaries(boundaries);
         }
 
