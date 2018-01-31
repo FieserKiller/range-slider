@@ -28,6 +28,17 @@ mvn spring-boot:run
 
 To see the demo, navigate to http://localhost:8080/
 
+## Release
+(More of a note for me ...)
+Current process:
+
+    Change Version from X.X.X-SNAPSHOT to X.X.X (demo and component)
+    mvn clean deploy -Poss-release
+    git tag range-slider-X.X.X
+    Change Version from X.X.X to Y.Y.Y-SNAPSHOT
+ 
+TODO: Change to real release-process ...  
+   
  
 ## License & Author
 
