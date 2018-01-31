@@ -5,7 +5,7 @@
 
     <groupId>com.github.daishy</groupId>
     <artifactId>range-slider</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>range-slider</name>
@@ -52,7 +52,6 @@
         <url>git://github.com/daishy/range-slider.git</url>
         <connection>scm:git:git://github.com/daishy/range-slider.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/daishy/range-slider.git</developerConnection>
-        <tag>range-slider-1.0.0</tag>
     </scm>
 
     <issueManagement>
