@@ -1,7 +1,6 @@
 package com.github.daishy.rangeslider;
 
 import java.util.Objects;
-
 import com.github.daishy.rangeslider.client.Range;
 import com.github.daishy.rangeslider.client.RangeSliderState;
 import com.vaadin.annotations.JavaScript;
@@ -176,17 +175,19 @@ public class RangeSlider extends AbstractJavaScriptComponent implements HasValue
      * @param boundaries -
      */
     public void setBoundaries(Range boundaries) {
+        this.getState().lowerBoundary = boundaries.getLower();
+        this.getState().upperBoundary = boundaries.getUpper();
+
         if (this.value != null && !boundaries.contains(this.value)) {
             this.adaptValueToFitNewBoundaries(boundaries);
         }
-
-        this.getState().lowerBoundary = boundaries.getLower();
-        this.getState().upperBoundary = boundaries.getUpper();
     }
 
     private void adaptValueToFitNewBoundaries(Range boundaries) {
-        int newLower = Math.max(this.value.getLower(), boundaries.getLower());
-        int newUpper = Math.min(this.value.getUpper(), boundaries.getUpper());
+        int lowerBound = boundaries.getLower();
+        int upperBound = boundaries.getUpper();
+        int newLower = Math.min(Math.max(this.value.getLower(), lowerBound), upperBound);
+        int newUpper = Math.max(Math.min(this.value.getUpper(), upperBound), lowerBound);
         this.setValue(new Range(newLower, newUpper), false);
     }
 

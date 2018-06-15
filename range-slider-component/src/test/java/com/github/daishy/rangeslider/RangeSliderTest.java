@@ -1,18 +1,17 @@
 package com.github.daishy.rangeslider;
 
-import com.github.daishy.rangeslider.client.Range;
-import com.vaadin.data.HasValue;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.util.function.Consumer;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.function.Consumer;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import com.github.daishy.rangeslider.client.Range;
+import com.vaadin.data.HasValue;
 
 /**
  * @author daishy@github.com
@@ -171,6 +170,20 @@ public class RangeSliderTest {
 
         this.thrown.expect(IllegalArgumentException.class);
         slider.setStep(2);
+    }
+
+    @Test
+    public void givenUpperValueBelowLowerBoundarieTheValueWillBeAdapted() {
+        RangeSlider slider = new RangeSlider(new Range(0, 10));
+        slider.setBoundaries(new Range(100, 110));
+        assertThat(slider.getValue(), is(equalTo(new Range(100, 100))));
+    }
+
+    @Test
+    public void givenLowerValueAboveUpperBoundaryTheValueWillBeAdapted() {
+        RangeSlider slider = new RangeSlider(new Range(0, 10));
+        slider.setBoundaries(new Range(-10, -5));
+        assertThat(slider.getValue(), is(equalTo(new Range(-5, -5))));
     }
 
 
