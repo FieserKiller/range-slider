@@ -31,8 +31,9 @@ public class DemoUI extends UI {
     protected void init(VaadinRequest request) {
         FormLayout layout = new FormLayout();
 
-        RangeSlider rangeSlider = new RangeSlider("RangeSlider", new Range(0, 20));
+        RangeSlider rangeSlider = new RangeSlider("RangeSlider", new Range(0, 1440));
         rangeSlider.setWidth("50%");//setSizeFull();
+        rangeSlider.setStep(15);
         layout.addComponent(rangeSlider);
 
         Slider slider = new Slider("Vaadin-Slider", 0, 10);

@@ -1076,15 +1076,29 @@
                     return;
                 }
 
-                var formattedValue = values[handleNumber];
+              var minutesSum = values[handleNumber];
 
-                if (options.tooltips[handleNumber] !== true) {
-                    formattedValue = options.tooltips[handleNumber].to(unencoded[handleNumber]);
-                }
+              if (options.tooltips[handleNumber] !== true) {
+                minutesSum = options.tooltips[handleNumber].to(unencoded[handleNumber]);
+              }
+              minutesSum =  Math.trunc(minutesSum);
+              var hour = Math.trunc(minutesSum / 60 );
+              var minutes = (minutesSum - (hour * 60 ));
 
-                tips[handleNumber].innerHTML = formattedValue;
+              tips[handleNumber].innerHTML = zeroFill(hour, 2) + ":" + zeroFill(minutes, 2);
+
             });
         }
+
+      function zeroFill( number, width )
+      {
+        width -= number.toString().length;
+        if ( width > 0 )
+        {
+          return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+        }
+        return number + ""; // always return a string
+      }
 
 
         function aria() {

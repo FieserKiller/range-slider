@@ -5,7 +5,7 @@
 
     <groupId>com.github.daishy</groupId>
     <artifactId>range-slider</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.3-TIMESLIDER</version>
     <packaging>jar</packaging>
 
     <name>range-slider</name>
